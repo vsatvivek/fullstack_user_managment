@@ -8,7 +8,7 @@ import {
   updateShowtime,
   deleteShowtime,
 } from "../controllers/showtime.controller.js";
-import { requireAuth } from "../middlewares/auth.js";
+import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 
 const r = Router();
 
@@ -21,6 +21,7 @@ r.get("/:id/seats", getAvailableSeats);
 r.post(
   "/",
   requireAuth,
+  requireAdmin,
   [
     body("movie_id")
       .isInt({ min: 1 })
@@ -42,6 +43,7 @@ r.post(
 r.put(
   "/:id",
   requireAuth,
+  requireAdmin,
   [
     body("movie_id")
       .optional()
@@ -67,6 +69,6 @@ r.put(
   updateShowtime
 );
 
-r.delete("/:id", requireAuth, deleteShowtime);
+r.delete("/:id", requireAuth, requireAdmin, deleteShowtime);
 
 export default r;

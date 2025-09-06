@@ -80,3 +80,23 @@ export const deleteMovie = async (req, res, next) => {
     next(error);
   }
 };
+
+// Admin-only route to get all movies (including inactive)
+export const getAllMovies = async (req, res, next) => {
+  try {
+    const { genre, search, page = 1, limit = 20 } = req.query;
+    const offset = (page - 1) * limit;
+
+    const movies = await movieModel.findAll({
+      genre,
+      search,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      includeInactive: true,
+    });
+
+    res.json({ movies });
+  } catch (error) {
+    next(error);
+  }
+};

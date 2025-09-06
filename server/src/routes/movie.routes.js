@@ -7,8 +7,9 @@ import {
   createMovie,
   updateMovie,
   deleteMovie,
+  getAllMovies,
 } from "../controllers/movie.controller.js";
-import { requireAuth } from "../middlewares/auth.js";
+import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 
 const r = Router();
 
@@ -17,10 +18,14 @@ r.get("/", getMovies);
 r.get("/genres", getGenres);
 r.get("/:id", getMovieById);
 
+// Admin routes
+r.get("/admin/all", requireAuth, requireAdmin, getAllMovies);
+
 // Protected routes (admin only for CRUD operations)
 r.post(
   "/",
   requireAuth,
+  requireAdmin,
   [
     body("title").notEmpty().withMessage("Title is required"),
     body("description").notEmpty().withMessage("Description is required"),
@@ -39,6 +44,7 @@ r.post(
 r.put(
   "/:id",
   requireAuth,
+  requireAdmin,
   [
     body("title").optional().notEmpty().withMessage("Title cannot be empty"),
     body("description")
@@ -59,6 +65,6 @@ r.put(
   updateMovie
 );
 
-r.delete("/:id", requireAuth, deleteMovie);
+r.delete("/:id", requireAuth, requireAdmin, deleteMovie);
 
 export default r;

@@ -7,7 +7,7 @@ import {
   updateTheater,
   deleteTheater,
 } from "../controllers/theater.controller.js";
-import { requireAuth } from "../middlewares/auth.js";
+import { requireAuth, requireAdmin } from "../middlewares/auth.js";
 
 const r = Router();
 
@@ -19,6 +19,7 @@ r.get("/:id", getTheaterById);
 r.post(
   "/",
   requireAuth,
+  requireAdmin,
   [
     body("name").notEmpty().withMessage("Theater name is required"),
     body("address").notEmpty().withMessage("Address is required"),
@@ -33,6 +34,7 @@ r.post(
 r.put(
   "/:id",
   requireAuth,
+  requireAdmin,
   [
     body("name")
       .optional()
@@ -51,6 +53,6 @@ r.put(
   updateTheater
 );
 
-r.delete("/:id", requireAuth, deleteTheater);
+r.delete("/:id", requireAuth, requireAdmin, deleteTheater);
 
 export default r;

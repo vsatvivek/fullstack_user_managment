@@ -18,6 +18,13 @@ import SeatSelection from "./pages/SeatSelection";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import MyBookings from "./pages/MyBookings";
 
+// Admin pages
+import AdminDashboard from "./pages/AdminDashboard";
+import MovieManagement from "./pages/MovieManagement";
+import CreateMovie from "./pages/CreateMovie";
+import ShowtimeManagement from "./pages/ShowtimeManagement";
+import CreateShowtime from "./pages/CreateShowtime";
+
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -50,6 +57,15 @@ export default function App() {
           />
           <Route path="/my-bookings" element={<MyBookings />} />
         </Route>
+      </Route>
+
+      {/* Admin routes (no layout) */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/movies" element={<MovieManagement />} />
+        <Route path="/admin/movies/create" element={<CreateMovie />} />
+        <Route path="/admin/showtimes" element={<ShowtimeManagement />} />
+        <Route path="/admin/showtimes/create" element={<CreateShowtime />} />
       </Route>
     </Routes>
   );
